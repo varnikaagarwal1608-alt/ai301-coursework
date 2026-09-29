@@ -1,71 +1,48 @@
 # Unit 2 — Claim and Reproduce
 
-Path: `beat-1-sandbox/unit-2/reproduction.md`
-
-Record of your claim and reproduction on the issue you chose in Unit 1, and of the
-evaluation runs that produced `eval-run.txt`. This file is graded at the path above; a copy
-kept anywhere else in the repository is not read.
-
-Complete every labelled field below. Each is graded on its own; content placed under the wrong
-label is not graded.
-
----
-
 ## Your identity upstream
 
-**GitHub username**
-
-[Your GitHub username, exactly as it appears on your profile — no `@`, no profile URL. Your
-comments upstream are identified by this name.]
-
----
+**GitHub username:** varnikaagarwal1608-alt
 
 ## Posted upstream
 
-**Claim comment**
+### Claim comment
+https://github.com/codepath/pathreview-ai301-fa26-s3/issues/36#issuecomment-5863303494
 
-[Link to the comment where you claimed the issue. Use the comment's own permalink, not the
-issue page on its own. **Then paste the text of that comment underneath the link** — the
-pasted text is what this field is graded on, so copy across what you actually posted.]
+Investigating this issue — starting with the existing tests in `tests/unit/test_review_routes.py` to understand the current `POST /reviews` coverage, then adding a test for the no-ingested-documents case. I'll report back with what I find.
 
-**Reproduction comment**
+### Reproduction comment
+https://github.com/codepath/pathreview-ai301-fa26-s3/issues/36#issuecomment-5881982529
 
-[Link to the comment where you posted your reproduction. It must record the environment
-(OS, relevant versions, code state), steps a stranger could follow, and what you observed.
-**Then paste the text of that comment underneath the link** — the pasted text is what this
-field is graded on, so copy across what you actually posted.]
+Environment: Windows (PowerShell), git 2.53.0.windows.2, Python 3.13.14 (repo requires 3.11+, so this satisfies it). Node.js and npm are not installed. Docker is not installed.
+
+Steps attempted: cloned my fork of pathreview-ai301-fa26-s3, located setup instructions in docs/SETUP.md. The documented setup requires Docker Compose to start PostgreSQL and Redis (docker compose up -d), followed by `make setup` to run migrations and seed test accounts, before the API or any test can run.
+
+Blocker: Docker is not installed on my machine (`docker --version` → "docker: The term 'docker' is not recognized"). Without the backing Postgres/Redis containers, `make setup` cannot run migrations, no test accounts get seeded, and POST /reviews has no database to write to. I could not proceed past this point in the documented setup.
+
+What this means for the test: I could not independently reproduce the behavior trihiennguye-ux described (a profile with zero ingested documents still completes with a fabricated-looking score rather than erroring) because I could not stand up the environment required to run the endpoint at all. I'm reporting this honestly rather than guessing at behavior I haven't observed myself.
 
 ## Eval iterations
 
-Answer all four sections. Quote source text directly; paraphrase does not satisfy these
-fields.
+### Run history
 
-**Run history**
+1. Smoke test (`--limit 3`): 3/3 agreement
+2. First full run: 16/17 scored items agreed (3 packages errored due to a Windows Unicode encoding bug in the terminal, not a rubric issue); one disagreement on pkg-05 (gold: accept, mine: reject, failed "Steps complete and followable")
+3. Retried the 3 errored packages with `--workers 1` to fix the encoding issue (`--only pkg-04,pkg-07,pkg-11`): 2/3 agreed (pkg-11 disagreed: gold accept, mine reject, failed "Claim promises, doesn't assert")
+4. Confirming full run (`--workers 1 --save-run eval-run.txt`): **19/20 scored items agreed (bar: 18/20 — PASS)**, every category matched (clear-accept 7/8, disclosure 1/1, no-evidence 4/4, unfollowable-comms 3/3, wrong-target 4/4)
 
-[The agreement score of each run you did, in order. A single run is a complete answer if
-only one run occurred. **The last score in your list must match the agreement line in the
-`eval-run.txt` you committed** — that file is the record of your final run.]
+### Package analysis
 
-**Package analysis**
+**pkg-05**: gold label says **accept**; my rubric said **reject**, failing the "Steps complete and followable" check. The package's repro report describes writing a minimal `env.yml` with a `category:` section but doesn't paste the file's literal contents — only a prose description of it. My check's pass condition required steps to be repeatable "verbatim," which this technically fails on a strict reading. But the bug only depends on the presence of the unrecognized `category:` key — the surrounding `dependencies:` values don't matter to reproducing it — so the omission doesn't actually block a stranger from reproducing the behavior. My rubric was judging the write-up's shape (did it show the literal file) rather than the outcome (can the bug still be reproduced from what's given), which is the trap the rubric template explicitly warned against.
 
-[Pick one scored package (`pkg-01` through `pkg-20` — the four `calib-` packages are never
-scored). Name it by id, say what your rubric decided and what the gold label said, and
-explain why your rubric read it that way.]
+### Check rationale
 
-**Check rationale**
+Quoted as it currently reads in `rubric.md`:
 
-[Quote one check from the `rubric.md` you uploaded to `tools/repro-check/`, exactly as it reads now.
-Then say why it reads that way — what you revised to get there, or what you rejected in
-favour of it.]
+"Disclosure respects repo convention | Comment text, read against the repo-facts block's disclosure policy | If the repo requires disclosing AI assistance, the comment discloses it; if no such policy exists, this check passes automatically | required"
 
-**Trade-offs**
+I wrote this check because the assignment flagged that one eval package specifically tests whether a rubric can catch an AI-disclosure violation, and a rubric with no check for it cannot recover those points elsewhere. Without this check, a comment written with AI assistance in a repo that requires disclosure would pass every other check and still get posted improperly.
 
-[Every check gives something up. Any one of these is a complete answer: a package whose
-result it changes, a canary you re-ran with `--only`, a case you accept it will miss, or a
-stated reason nothing changed elsewhere. "Nothing changed, and here is how I know" earns
-the point in full when the reason follows.]
+### Trade-offs
 
----
-
-Related paths: `eval-run.txt` in this directory; your skill's files in
-`tools/repro-check/`.
+This check gives up nuance on *how* disclosure should be phrased — it only checks whether disclosure is present at all, not whether it's clearly worded or placed prominently in the comment. I accepted this trade-off because the eval set's one disclosure-relevant package (the category floor's single-package category) only tests presence versus absence, not phrasing quality, so a stricter check risked false rejects on comments that disclose adequately but informally. My confirming full run matched this category (disclosure 1/1), so the simpler binary check was sufficient for what the eval set actually probes.
