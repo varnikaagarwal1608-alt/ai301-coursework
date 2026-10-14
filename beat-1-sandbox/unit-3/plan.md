@@ -40,4 +40,4 @@ tests — re-running the full test file (not just the one xfail test)
 checks for this.
 
 ## Deviations
-(fill in after build)
+None. The build matched the plan: one regex change in safety/prompt_defense.py and removal of the issue #24 xfail marker, as the test plan said.
