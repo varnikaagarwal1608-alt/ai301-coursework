@@ -1,61 +1,28 @@
 # Unit 4 — Test and Submit
 
-Path: `beat-1-sandbox/unit-4/pull-request.md`
-
-Record of the pull request you opened against the Path Review repo, and of the evaluation
-runs that produced `eval-run.txt`. This file is graded at the path above; a copy kept
-anywhere else in the repository is not read.
-
-Complete every labelled field below. Each is graded on its own; content placed under the wrong
-label is not graded.
-
----
-
 ## Your pull request
 
-**Pull request**
+### Pull request
+https://github.com/codepath/pathreview-ai301-fa26-s3/pull/224
 
-[Link to the pull request you opened. It must be the pull request's own page on the Path
-Review repo, not your fork's branch page.]
-
-**Branch**
-
-[The name of the branch the pull request comes from, exactly as it appears in your fork.
-The naming shape is a type prefix, then the issue number, then a short description. **The
-issue number in the branch name must be the number of the issue the pull request fixes** —
-a name carrying any other number does not satisfy this field.]
+### Branch
+fix/24-role-switch-whitespace
 
 ## Eval iterations
 
-Answer all four sections. Quote source text directly; paraphrase does not satisfy these
-fields.
+### Run history
+Scores in order: 2/3 (smoke run, `--limit 3`), 0/1 (`--only pkg-02`), 3/3 (`--only pkg-02,pkg-01,pkg-03`), 14/19 (first full run; pkg-05 errored on a Windows cp1252 encoding error, so nothing was saved), 0/6 (`--only` on the six clear accepts), 9/10 (the six clear accepts plus four not-tested rejects), 19/20 (final full run, saved with `--save-run`). The last score matches the line in my committed eval-run.txt: "agreement: 19/20 scored items  (bar: 18/20: PASS)".
 
-**Run history**
+### Package analysis
+Package: pkg-11 (ripgrep#3477, a clear-accept).
 
-[The agreement score of each run you did, in order. A single run is a complete answer if
-only one run occurred. **The last score in your list must match the agreement line in the
-`eval-run.txt` you committed** — that file is the record of your final run.]
+My rubric decided reject; the gold label is accept. My rubric failed it on Description matches diff, Tests exist and Evidence is observable. The grader's reason for Description matches diff was: "Description claims tests for 'escaped, unescaped, and double-backslash cases' but the one new test covers only escaped and double-backslash; no unescaped-trim case exists."
 
-**Package analysis**
+The PR description says "tests added for the escaped, unescaped, and double-backslash cases", but the diff adds one test, `escaped_trailing_space_is_kept`, which covers the escaped and double-backslash cases and has no unescaped case. My rubric says "A claimed test that is not in the diff fails," so it rejected the overclaim. I think that is a defensible reading, and I left the rule alone. Loosening it to flip pkg-11 would risk the reject packages that depend on the same rule. I count pkg-11 as one of the arguable packages.
 
-[Pick one scored package (`pkg-01` through `pkg-20` — the four `calib-` packages are never
-scored). Name it by id, say what your rubric decided and what the gold label said, and
-explain why your rubric read it that way.]
+### Check rationale
+This is the Evidence is observable row from my uploaded rubric.md, exactly as it reads now:
 
-**Check rationale**
+| Evidence is observable | The test evidence section: the before and after of the issue's scenario, and the checks the repo's own facts name | The issue's scenario has a before result and an after result that show the behavior changing as the issue expects, as printed output or as a specific stated result (for example the exact output line, or "1462 passed"). The repo's required checks are reported as run, with counts or output, or an honest note saying why not. Fails only if the decisive before/after is missing, vague ("it works"), contradicts the fix, or a required check is silently absent. Side claims such as "controls unchanged" or "lint clean" do not fail this check by themselves. Do not demand checks the repo never names. | required |
 
-[Quote one check from the `rubric.md` you uploaded to `tools/pr-precheck/`, exactly as it reads now.
-Then say why it reads that way — what you revised to get there, or what you rejected in
-favour of it.]
-
-**Trade-offs**
-
-[Every check gives something up. Any one of these is a complete answer: a package whose
-result it changes, a canary you re-ran with `--only`, a case you accept it will miss, or a
-stated reason nothing changed elsewhere. "Nothing changed, and here is how I know" earns
-the point in full when the reason follows.]
-
----
-
-Related paths: `eval-run.txt` in this directory; your skill's files in
-`tools/pr-precheck/`.
+Why it reads this way: my first version required "a command plus its real printed output" for every result. On pkg-02 that rejected a clear accept for a bare "pytest ... passes
