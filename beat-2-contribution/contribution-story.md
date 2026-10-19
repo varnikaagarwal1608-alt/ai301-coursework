@@ -55,10 +55,9 @@ happened; these entries are the toolkit's own timeline.
 All four entries are graded. Keep every heading below, and fill each
 one in the week it belongs to.
 
-**Unit 5: [one line on the tool work]**
+**Unit 5: Built my issue-scout and search strategy, then fixed its ranking**
 
-[2-4 sentences: what you built (the scout, your strategy), what broke
-or fell short, what changed because of it.]
+I installed the issue-scout skill, wrote three `gh search issues` queries from my fit profile (good first issue and documentation, Python and JavaScript), and added ranking filters. My first scan's top 5 were all issues filed minutes earlier, because I ranked by most recently updated and my 60-day filter removed nothing. I changed the tie-break to oldest created first, added a rule to drop issues created in the last 3 days, and added the missing createdAt field to my queries so those rules can work. I haven't re-run a scan to confirm the fix. When I graded my three picks, the scout accepted an issue that was already fixed (a merged PR), so the rubric needs an "already resolved" check, which I plan to add.
 
 **Unit 6: [one line on the tool work]**
 
