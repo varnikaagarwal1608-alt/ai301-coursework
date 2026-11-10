@@ -58,9 +58,9 @@ one in the week it belongs to.
 
 I installed the issue-scout skill, wrote three `gh search issues` queries from my fit profile (good first issue and documentation, Python and JavaScript), and added ranking filters. My first scan's top 5 were all issues filed minutes earlier, because I ranked by most recently updated and my 60-day filter removed nothing. I changed the tie-break to oldest created first, added a rule to drop issues created in the last 3 days, and added the missing createdAt field to my queries so those rules can work. I haven't re-run a scan to confirm the fix. When I graded my three picks, the scout accepted an issue that was already fixed (a merged PR), so the rubric needs an "already resolved" check, which I plan to add.
 
-**Unit 6: Voice guard installed and used by hand, scout rubric patched, memory file not written**
+**Unit 6: Voice guard installed and used by hand, scout rubric patched, repo memory file written**
 
-I installed the voice guard (one canonical voice guide with an Upstream section, `check_voice.py`, and a PreToolUse hook). `/hooks` showed the hook loaded, but my wiring test (`gh issue comment --help`) ran instead of being stopped, even after I widened the matcher to `Bash|PowerShell`, so I ran `check_voice.py --draft` by hand before each post and posted with `gh`. The guard also stopped my claim draft twice on rules I had written: one rule asked for a report-back date while repro-check rejects dates in a claim, and another demanded a question that names what I had already read. I rewrote the first rule and dropped the question from the claim. I also patched the scout rubric: I replaced "Scope is bounded" with the staff scope-feasible row and added a difficulty note, plus a new required "Not already resolved" check. I have not written the CLAUDE.local.md memory file yet.
+I installed the voice guard (one canonical voice guide with an Upstream section, `check_voice.py`, and a PreToolUse hook). `/hooks` showed the hook loaded, but my wiring test (`gh issue comment --help`) ran instead of being stopped, even after I widened the matcher to `Bash|PowerShell`, so I ran `check_voice.py --draft` by hand before each post and posted with `gh`. The guard also stopped my claim draft twice on rules I had written: one rule asked for a report-back date while repro-check rejects dates in a claim, and another demanded a question that names what I had already read. I rewrote the first rule and dropped the question from the claim. I also patched the scout rubric: I replaced "Scope is bounded" with the staff scope-feasible row and added a difficulty note, plus a new required "Not already resolved" check. I wrote a 14-line CLAUDE.local.md in my clone of codex-lb, kept out of my commits with `.git/info/exclude`. The repo ships both CLAUDE.md and AGENTS.md, so I left out the `@AGENTS.md` import and kept only conclusions I had verified: the branch and commit rules, the OpenSpec threshold, the PR template, and that `uv` and `make` are missing on my machine.
 
 **Unit 7: Did not install the ship-gate; checked the branch by hand**
 
@@ -210,7 +210,8 @@ Forked and cloned the repo, created branch `docs/desktop-dot-recipe`, and confir
 
 **Maintainer Feedback:**
 
-- 2026-11-10: none yet. The PR is a draft with no reviews or comments, and the issue has only my two comments.
+- 2026-11-09: CodeRabbit (an automated bot) commented that draft PRs are not reviewed automatically. No human maintainer has reviewed or replied.
+- 2026-11-10: still no maintainer reply on the PR or the issue. I did not trigger the bot's manual review, and I am waiting on the maintainer for the OpenSpec question.
 
 **Status:** Awaiting review
 
