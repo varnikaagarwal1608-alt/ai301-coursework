@@ -56,7 +56,7 @@ one in the week it belongs to.
 
 **Unit 5: Built my issue-scout and search strategy, then fixed its ranking**
 
-I installed the issue-scout skill, wrote three `gh search issues` queries from my fit profile (good first issue and documentation, Python and JavaScript), and added ranking filters. My first scan's top 5 were all issues filed minutes earlier, because I ranked by most recently updated and my 60-day filter removed nothing. I changed the tie-break to oldest created first, added a rule to drop issues created in the last 3 days, and added the missing createdAt field to my queries so those rules can work. I haven't re-run a scan to confirm the fix. When I graded my three picks, the scout accepted an issue that was already fixed (a merged PR), so the rubric needs an "already resolved" check, which I plan to add.
+I installed the issue-scout skill, wrote three `gh search issues` queries from my fit profile (good first issue and documentation, Python and JavaScript), and added ranking filters. My first scan's top 5 were all issues filed minutes earlier, because I ranked by most recently updated and my 60-day filter removed nothing. I changed the tie-break to oldest created first, added a rule to drop issues created in the last 3 days, and added the missing createdAt field to my queries so those rules can work. I haven't re-run a scan to confirm the fix. When I graded my three picks, the scout accepted an issue that was already fixed (a merged PR), so the rubric needed an "already resolved" check, which I added in Unit 6.
 
 **Unit 6: Voice guard installed and used by hand, scout rubric patched, repo memory file written**
 
@@ -68,7 +68,7 @@ I did not install the ship-gate or write a ship-manifest.md. I ran the equivalen
 
 **Unit 8: Did not install the PR monitor; no maintainer feedback yet**
 
-I did not install the PR monitor or write a playbook. My PR (#2713) is a draft that I opened on 2026-11-09. As of 2026-11-10 it has no reviews or comments, so there was nothing for a monitor to draft. I checked the PR page by hand and posted one report-back comment on the issue linking the PR, after running my voice check on it. Without a playbook I have no written threshold for when to nudge. The repo's CONTRIBUTING.md says to ask in a draft PR when unsure about OpenSpec, and I asked there.
+I did not install the PR monitor or write a playbook. My PR (#2713) is a draft that I opened on 2026-11-09. As of 2026-11-10 it has no human reviews or comments, only an automated CodeRabbit comment saying that draft PRs are not reviewed, so there was nothing for a monitor to draft. I checked the PR page by hand and posted one report-back comment on the issue linking the PR, after running my voice check on it. Without a playbook I have no written threshold for when to nudge. The repo's CONTRIBUTING.md says to ask in a draft PR when unsure about OpenSpec, and I asked there.
 
 ---
 
